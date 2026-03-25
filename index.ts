@@ -38,6 +38,8 @@ const redisportStr: string = String(process.env.REDIS_PORT);
 const redisConnection = new IORedis({
     host: redisEndpoint,
     port: parseInt(redisportStr || '6379', 10),
+    username: process.env.REDIS_USERNAME || 'default', // Redis 6.0+ 預設帳號通常是 default
+    password: process.env.REDIS_PASSWORD,              // 你的 Redis 密碼
     maxRetriesPerRequest: null, // BullMQ 要求必須設為 null
 })
 
