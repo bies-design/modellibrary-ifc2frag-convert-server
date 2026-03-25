@@ -1,0 +1,33 @@
+services:
+    ifcToFragsConvertWorker-local:
+        # container_name: tus-server-local
+        build: 
+            context: .
+            dockerfile: ./Dockerfile
+        image: biescloudtechsupport/node:24.0-slim-260325
+        working_dir: /usr/local/app
+        command: booting ifcToFragsConvertWorker_init.sh dev
+        environment:
+            - NODE_OPTIONS=--max-old-space-size=8192  # 允許最多可以使用 8GB 記憶體
+        # networks:
+        #     modlib:
+        #         aliases:
+        #             - modlib.tus-server-local
+        ports:
+            - ${TARGET_HOST}:${IFC_FRAGS_CONVERT_WORKER_PORT}:${IFC_FRAGS_CONVERT_WORKER_PORT}
+        # depends_on:
+        #     - tus-server-local
+        # env_file:
+        #     - ./.env
+        volumes: 
+            - ./:/usr/local/app
+        deploy:
+            resources:
+                limits:
+                    memory: 10G                       # 確保容器本身記憶體不超用10 GB，就不會被 Docker 殺掉
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "2m"   # 單個檔案最大 2MB
+                max-file: "15" 
+        restart: unless-stopped
