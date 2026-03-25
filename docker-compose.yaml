@@ -5,7 +5,7 @@ services:
             context: .
             dockerfile: ./Dockerfile
         image: biescloudtechsupport/node:24.0-slim-260325
-        working_dir: /usr/local/app
+        working_dir: /usr/local
         command: booting ifcToFragsConvertWorker_init.sh dev
         environment:
             - NODE_OPTIONS=--max-old-space-size=8192  # 允許最多可以使用 8GB 記憶體
